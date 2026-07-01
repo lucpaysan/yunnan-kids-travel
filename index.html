@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>花生的云南探险日记</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/pixel_peanut.svg" type="image/svg+xml">
+</head>
+<body>
+
+<!-- ============================================================
+     主页
+     ============================================================ -->
+<div class="page" id="homePage">
+    <div class="container">
+        <!-- 顶部标题 -->
+        <div class="header">
+            <h1>
+                <img src="images/pixel_peanut.svg" class="peanut-icon" alt="花生">
+                花生的云南探险日记
+            </h1>
+            <div class="subtitle">云南 2026年7月13日 - 7月23日</div>
+            <div class="motto">用眼睛观察，用心感受，用文字记录</div>
+        </div>
+
+        <!-- 星星计数器 -->
+        <div class="star-counter">
+            <span class="star-icon">⭐</span>
+            <span>总星数：<span id="totalStars">0</span></span>
+            <span class="star-icon">⭐</span>
+        </div>
+
+        <!-- 奖励进度条 -->
+        <div class="progress-section">
+            <h3>🏆 奖励进度</h3>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+            </div>
+            <div class="progress-label" id="progressLabel">0 / 200 ⭐</div>
+            <div class="reward-badges" id="rewardBadges"></div>
+        </div>
+
+        <!-- 天数卡片网格 -->
+        <h3 style="font-family:var(--font-pixel);font-size:12px;margin:15px 0 10px;color:var(--color-primary);">🗺️ 行程任务</h3>
+        <div class="days-grid" id="daysGrid"></div>
+
+        <!-- 底部按钮 -->
+        <div style="text-align:center;margin:20px 0;">
+            <button class="btn btn-secondary" onclick="renderMemoir()">
+                📖 查看纪念册
+            </button>
+            <button class="btn" style="background:var(--color-red);" onclick="resetData()">
+                🗑️ 重置数据
+            </button>
+        </div>
+
+        <div class="footer">
+            <p>🥜 花生的云南探险日记 · 用 <span class="pixel-heart">❤</span> 制作</p>
+            <p>2026年7月 · 云南</p>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     每日任务页
+     ============================================================ -->
+<div class="page hidden" id="dayPage">
+    <div class="container">
+        <!-- 返回按钮 -->
+        <button class="back-btn" onclick="showPage('homePage');renderHome();">
+            ← 返回主页
+        </button>
+
+        <!-- 每日头部 -->
+        <div class="day-header" id="dayHeader">
+            <div class="day-title" id="dayTitle"></div>
+            <div class="day-info" id="dayInfo"></div>
+            <div class="day-type" id="dayType"></div>
+        </div>
+
+        <!-- 背景知识 -->
+        <div class="background-section" id="backgroundSection"></div>
+
+        <!-- 任务列表 -->
+        <div id="taskList"></div>
+
+        <!-- 日记区域 -->
+        <div class="diary-section" id="diarySection"></div>
+
+        <!-- 返回按钮 -->
+        <button class="back-btn" onclick="showPage('homePage');renderHome();" style="margin-top:15px;">
+            ← 返回主页
+        </button>
+    </div>
+</div>
+
+<!-- ============================================================
+     纪念册页
+     ============================================================ -->
+<div class="page hidden" id="memoirPage">
+    <div class="container">
+        <!-- 返回按钮 -->
+        <button class="back-btn" onclick="showPage('homePage');renderHome();">
+            ← 返回主页
+        </button>
+
+        <!-- 纪念册标题 -->
+        <div class="header" style="background:var(--color-accent);">
+            <h1>🏆 云南旅行纪念册</h1>
+            <div class="subtitle">花生的云南探险日记</div>
+            <div class="motto">2026年7月13日 - 7月23日</div>
+        </div>
+
+        <!-- 统计数据 -->
+        <div class="memoir-section">
+            <h2>📊 旅行统计</h2>
+            <div class="memoir-stats" id="memoirStats"></div>
+        </div>
+
+        <!-- 每日完成情况 -->
+        <div class="memoir-section">
+            <h2>📅 每日任务完成情况</h2>
+            <div id="memoirDays"></div>
+        </div>
+
+        <!-- 照片墙 -->
+        <div class="memoir-section">
+            <h2>📷 旅行照片墙</h2>
+            <div class="photo-wall" id="memoirPhotos"></div>
+        </div>
+
+        <!-- 日记汇总 -->
+        <div class="memoir-section">
+            <h2>✍️ 日记汇总</h2>
+            <div id="memoirDiaries"></div>
+        </div>
+
+        <!-- 导出按钮 -->
+        <button class="btn btn-export" onclick="exportPDF()">
+            📄 导出PDF / 打印
+        </button>
+
+        <!-- 返回按钮 -->
+        <button class="back-btn" onclick="showPage('homePage');renderHome();" style="margin-top:15px;">
+            ← 返回主页
+        </button>
+    </div>
+</div>
+
+<!-- ============================================================
+     家长确认弹窗
+     ============================================================ -->
+<div class="parent-confirm-overlay" id="parentConfirm">
+    <div class="parent-confirm-box">
+        <h3>🔑 家长确认</h3>
+        <p>任务：<strong id="confirmTaskTitle"></strong></p>
+        <p id="confirmStars" style="color:var(--color-accent);"></p>
+        <p style="font-size:11px;color:var(--color-text-light);">请家长确认孩子已完成此任务</p>
+        <div class="confirm-btns">
+            <button class="btn-no" id="confirmNo">❌ 取消</button>
+            <button class="btn-yes" id="confirmYes">✅ 确认完成</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+     脚本（带版本号防缓存）
+     ============================================================ -->
+<script src="js/tasks.js?v=20260701"></script>
+<script src="js/app.js?v=20260701"></script>
+
+</body>
+</html>
